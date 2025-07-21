@@ -1,0 +1,43 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+<div class="vehicle-form-container">
+    <form class="vehicle-form" method="post" enctype="multipart/form-data">
+        <select id="make" name="make">
+            <option>-- Choisir la marque --</option>
+        </select>
+
+        <select id="model" name="model">
+            <option>-- Choisir le modèle --</option>
+        </select>
+        <button type="submit" class="submit-btn">Enregistrer le véhicule</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const makeSelect = document.getElementById('make');
+    const modelSelect = document.getElementById('model');
+
+    const makes = await fetch('/api/makes').then(res => res.json());
+    makes.data.forEach(make => {
+        const opt = document.createElement('option');
+        opt.value = make.name;
+        opt.textContent = make.name;
+        makeSelect.appendChild(opt);
+    });
+
+    makeSelect.addEventListener('change', async () => {
+        modelSelect.innerHTML = '<option>-- Choisir le modèle --</option>';
+        const models = await fetch(`/api/models?make=${makeSelect.value}`).then(res => res.json());
+        models.data.forEach(model => {
+            const opt = document.createElement('option');
+            opt.value = model.name;
+            opt.textContent = model.name;
+            modelSelect.appendChild(opt);
+        });
+    });
+});
+</script>
+
+{% endblock %}

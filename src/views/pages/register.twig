@@ -1,0 +1,44 @@
+{% extends '../layouts/base.twig' %}
+{% set noLayout = true %}
+{% block content %}
+<main>
+    <div class="logo-container">
+        <img src="/assets/img/logo.svg" alt="Logo">
+    </div>
+    <h1 style="text-align:center;">CarMaintenance Pro</h1>
+    <p class="subtitle" style="text-align:center;">Choisissez votre profil</p>
+    <p class="subtitle" style="text-align:center; color:#bfbfbf;">Sélectionnez le type de compte qui vous correspond</p>
+
+    <div class="register-choice-block">
+        <div class="register-choice">
+            <div class="register-icon user">
+                <svg width="32" height="32" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 8-4 8-4s8 0 8 4"/></svg>
+            </div>
+            <div class="register-info">
+                <div class="register-label">Particulier</div>
+                <button class="register-btn green" onclick="window.location.href='/registerUser'">S'inscrire comme particulier</button>
+            </div>
+        </div>
+        <div class="register-choice">
+            <div class="register-icon pro">
+                <svg width="32" height="32" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5"/><rect x="2" y="17" width="20" height="5" rx="2"/><rect x="7" y="2" width="10" height="5" rx="2"/></svg>
+            </div>
+            <div class="register-info">
+                <div class="register-label">Professionnel</div>
+                <button class="register-btn red" onclick="window.location.href='/registerMecano'">S'inscrire comme professionnel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="register-extra">
+        <span class="extra-item green">✔ Sécurisé</span>
+        <span class="extra-item purple">📞 Support 24/7</span>
+    </div>
+
+    <div class="register-login-block">
+        <span id="vadc">Vous avez déjà un compte ?</span>
+        <button class="login-btn" onclick="window.location.href='/login'">Se connecter</button>
+    </div>
+    
+</main>
+{% endblock %}

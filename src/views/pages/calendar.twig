@@ -1,0 +1,23 @@
+{% extends 'base.twig' %}
+{% block title %}Calendrier des rendez-vous{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/calendar/core/main.css">
+<link rel="stylesheet" href="/calendar/daygrid/main.css">
+<link rel="stylesheet" href="/calendar/timegrid/main.css">
+<link rel="stylesheet" href="/calendar/main.css">
+<link rel="stylesheet" href="/public/assets/css/calendar.css">
+
+<div class="calendar-container">
+    <h2>Calendrier des rendez-vous</h2>
+    <div id ="calendrier">
+        <!-- Implémentation calendrier ou JS ici -->
+        <p>Ici le calendrier interactif</p>
+    </div>
+</div>
+<script src="/calendar/core/main.js"></script>
+<script src="/calendar/daygrid/main.js"></script>
+<script src="/calendar/timegrid/main.js"></script>
+<script src="/calendar/list/main.js"></script>
+<script src="/FullCalendar/script.js"></script>
+
+{% endblock %}

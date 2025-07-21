@@ -1,0 +1,20 @@
+model Vehicle {
+  id               Int         @id @default(autoincrement())
+  type             String      
+  marque           String      
+  model            String      
+  année            String      
+  carburant        String      
+  km               Int        
+  boite_de_vitesse String      
+  couleur          String      
+  portes           Int         
+  photo            String?     
+  userId           Int
+  user             User        @relation(fields: [userId], references: [id])
+  createdAt        DateTime    @default(now())
+  date_dernier_CT  DateTime    
+  imatriculation   String      
+  entretiens       Entretien[]
+  documents        Document[]
+}

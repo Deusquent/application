@@ -1,0 +1,22 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CarMaintenance Pro{% endblock %}</title>
+    <link rel="stylesheet" href="/asset/css/commun.css">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    {% if not noLayout %}
+        {% include 'partials/header.twig' %}
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% if not noLayout %}
+        {% include 'partials/footer.twig' %}
+    {% endif %}
+</body>
+</html>

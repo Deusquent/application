@@ -1,0 +1,24 @@
+{% if not noLayout %}
+<header>
+  <div class="container">
+    <div class="header-logo-block">
+      <div class="header-logo">
+        <img src="/assets/img/logo.svg" alt="Logo" style="width:24px;height:24px;">
+      </div>
+      <span class="header-title">CarMaintenance Pro</span>
+    </div>
+
+    <nav>
+      {% if session.userId %}
+        <a href="/dashboardUser" class="{% if active == 'dashboardUser' %}active{% endif %}">Tableau de bord</a>
+      {% elseif session.mecanoId %}
+        <a href="/dashboardMecano" class="{% if active == 'dashboardMecano' %}active{% endif %}">Tableau de bord</a>
+      {% endif %}
+      
+      <a href="/calendar" class="{% if active == 'calendar' %}active{% endif %}">Calendrier</a>
+      <a href="/logout">Déconnexion</a>
+    </nav>
+  </div>
+</header>
+<div class="dashboard-topbar"></div>
+{% endif %}

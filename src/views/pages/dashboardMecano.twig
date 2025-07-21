@@ -1,0 +1,143 @@
+{% extends '../layouts/base.twig' %}
+
+{% block content %}
+	<div class="dashboard-layout">
+		<aside class="sidebar">
+			<div class="sidebar-header">
+				<img src="/assets/img/logo.svg" alt="Logo" class="sidebar-logo">
+				<span>Garage Pro Manager</span>
+			</div>
+			<nav>
+				<a href="/dashboard" class="active">Tableau de bord</a>
+				<a href="/vehicules">Véhicules clients</a>
+				<a href="/rdv">Rendez-vous</a>
+				<a href="/documents">Documents</a>
+				<a href="/parametres">Paramètres</a>
+			</nav>
+			<div class="sidebar-garage">
+				<div class="garage-title">GARAGE DUPONT
+					<span class="garage-dot"></span>
+				</div>
+				<div class="garage-status">Ouvert
+					<span class="stat-green">18h</span>
+				</div>
+				<div>Mécaniciens
+					<span class="stat-yellow">4/5</span>
+				</div>
+				<div>Points libres
+					<span class="stat-blue">2/6</span>
+				</div>
+			</div>
+		</aside>
+		<div class="dashboard-main">
+			<header class="dashboard-header">
+				<h1>Tableau de bord</h1>
+				<p>Vue d'ensemble de votre activité</p>
+				<div class="dashboard-actions">
+					<input type="text" class="search-input" placeholder="Rechercher un véhicule ou client...">
+					<a href="/nouvel-ordre" class="btn btn-red">+ Nouvel ordre</a>
+				</div>
+			</header>
+			<div class="dashboard-stats">
+				<div class="stat-card">
+					<span class="stat-icon">🚗</span>
+					<div>
+						<div class="stat-value"></div>
+						<div class="stat-label">Clients actifs</div>
+					</div>
+				</div>
+				<div class="stat-card">
+					<span class="stat-icon">📅</span>
+					<div>
+						<div class="stat-value"></div>
+						<div class="stat-label">RDV aujourd'hui</div>
+					</div>
+				</div>
+				<div class="stat-card">
+					<span class="stat-icon">🛠️</span>
+					<div>
+						<div class="stat-value"></div>
+						<div class="stat-label">En cours</div>
+					</div>
+				</div>
+				<div class="stat-value"></div>
+				<div class="stat-label"></div>
+			</div>
+		</div>
+	</div>
+	<div class="dashboard-content-grid">
+		<section class="dashboard-block rdv-block">
+			<div class="block-header">
+				<h2>Rendez-vous du jour</h2>
+				<a href="/rdv" class="block-link"></a>
+			</div>
+			<div class="rdv-list">
+				<div class="rdv-card rdv-green">
+					<div class="rdv-hour"></div>
+					<div class="rdv-info">
+						<div class="rdv-title"></div>
+						<div class="rdv-desc"></div>
+						<div class="rdv-plate"></div>
+					</div>
+					<span class="rdv-status badge badge-green"></span>
+				</div>
+				<div class="rdv-card rdv-yellow">
+					<div class="rdv-hour"></div>
+					<div class="rdv-info">
+						<div class="rdv-title"></div>
+						<div class="rdv-desc"></div>
+						<div class="rdv-plate"></div>
+					</div>
+					<span class="rdv-status badge badge-yellow"></span>
+				</div>
+				<div class="rdv-card rdv-purple">
+					<div class="rdv-hour"></div>
+					<div class="rdv-info">
+						<div class="rdv-title"></div>
+						<div class="rdv-desc"></div>
+						<div class="rdv-plate"></div>
+					</div>
+					<span class="rdv-status badge badge-purple"></span>
+				</div>
+			</div>
+		</section>
+		<section class="dashboard-block vehicules-block">
+			<div class="block-header">
+				<h2>Véhicules récents</h2>
+				<a href="/vehicules" class="block-link"></a>
+			</div>
+			<div class="vehicle-list">
+				<div class="vehicle-card">
+					<div class="vehicle-icon">
+						<span class="material-icons"></span>
+					</div>
+					<div class="vehicle-info">
+						<div class="vehicle-title"></div>
+						<div class="vehicle-desc"></div>
+						<div class="vehicle-meta"></div>
+					</div>
+					<span class="badge badge-green">OK</span>
+					<span class="vehicle-actions">
+						<a href="#">
+							<span class="material-icons">edit</span>
+						</a>
+						<a href="#">
+							<span class="material-icons">visibility</span>
+						</a>
+					</span>
+				</div>
+				<div class="vehicle-card">
+					<div class="vehicle-icon">
+						<span class="material-icons"></span>
+					</div>
+					<div class="vehicle-info">
+						<div class="vehicle-title"></div>
+						<div class="vehicle-desc"></div>
+						<div class="vehicle-meta"></div>
+					</div>
+					<span class="badge badge-grey">OK</span>
+				</div>
+			</div>
+		</section>
+	</div>
+</div></div>{% endblock %}

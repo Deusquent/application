@@ -1,0 +1,92 @@
+{% extends '../layouts/base.twig' %}
+
+{% block title %}Inscription | CarMaintenance Pro
+{% endblock %}
+{% set noLayout = true %}
+{% block content %}
+
+	<div class="logo-container">
+		<img src="/assets/img/logo.svg" alt="Logo">
+	</div>
+
+	<h1>Créer un compte</h1>
+	<p class="subtitle">Accédez à votre carnet d’entretien</p>
+
+	{% if error %}
+		<div class="error" style="color: red; margin-bottom: 1em;">{{ error }}</div>
+	{% endif %}
+
+	<form action="/inscription" method="POST">
+
+		<div class="row">
+			<label>
+				<span>Prénom</span>
+				<div class="input-group">
+					<input type="text" id="firstName" name="firstName" placeholder="Prénom" required>
+				</div>
+			</label>
+
+			<label>
+				<span>Nom</span>
+				<div class="input-group">
+					<input type="text" id="lastName" name="lastName" placeholder="Nom" required>
+				</div>
+			</label>
+		</div>
+
+		<label>
+			<span>Email</span>
+			<div class="input-group">
+				<input type="email" id="email" name="email" placeholder="email" required>
+			</div>
+		</label>
+
+		<label>
+			<span>Mot de passe</span>
+			<div class="input-group">
+				<input type="password" id="password" name="password" placeholder="••••••••" required>
+			</div>
+		</label>
+
+		<label>
+			<span>Confirmer le mot de passe</span>
+			<div class="input-group">
+				<input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+			</div>
+		</label>
+
+		<label>
+			<span>Téléphone</span>
+			<div class="input-group">
+				<input type="tel" id="mobile" name="mobile" placeholder="Numéro de téléphone" required>
+			</div>
+		</label>
+
+		<label>
+			<span>Adresse</span>
+			<div class="input-group">
+				<input type="text" id="mobile" name="address" placeholder="Adresse" required>
+			</div>
+		</label>
+
+		<label>
+			<span>Ville</span>
+			<div class="input-group">
+				<input type="text" id="city" name="city" placeholder="Ville" required>
+			</div>
+		</label>
+
+
+		<button type="submit" class="submit-btn">S'inscrire</button>
+
+		<p class="login-text">
+			Déjà un compte ?
+			<span onclick="window.location='/login'">Connectez-vous</span>
+		</p>
+	</form>
+
+	<div class="register-link-block" style="margin-top: 1.5rem; text-align: center;">
+		<button class="register-btn" onclick="window.location.href='/register'">retour a l'accueil</button>
+	</div>
+
+{% endblock %}

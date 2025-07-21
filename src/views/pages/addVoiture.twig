@@ -1,0 +1,127 @@
+{% extends 'layouts/base.twig' %}
+{% block title %}Ajouter un véhicule
+{% endblock %}
+{% block content %}
+	<div class="form-container">
+		<form action="/vehicle/add" method="POST" enctype="multipart/form-data">
+			<h2>Ajouter un véhicule</h2>
+			<select name="marque" required>
+				<option value="">-- Sélectionner la marque --</option>
+				<option value="Abarth">Abarth</option>
+				<option value="Alfa Romeo">Alfa Romeo</option>
+				<option value="Alpine">Alpine</option>
+				<option value="Aston Martin">Aston Martin</option>
+				<option value="Audi">Audi</option>
+				<option value="Bentley">Bentley</option>
+				<option value="BMW">BMW</option>
+				<option value="Bugatti">Bugatti</option>
+				<option value="Buick">Buick</option>
+				<option value="Cadillac">Cadillac</option>
+				<option value="Chevrolet">Chevrolet</option>
+				<option value="Chrysler">Chrysler</option>
+				<option value="Citroën">Citroën</option>
+				<option value="Cupra">Cupra</option>
+				<option value="Dacia">Dacia</option>
+				<option value="Daewoo">Daewoo</option>
+				<option value="Daihatsu">Daihatsu</option>
+				<option value="Dodge">Dodge</option>
+				<option value="DS Automobiles">DS Automobiles</option>
+				<option value="Ferrari">Ferrari</option>
+				<option value="Fiat">Fiat</option>
+				<option value="Fisker">Fisker</option>
+				<option value="Ford">Ford</option>
+				<option value="Genesis">Genesis</option>
+				<option value="GMC">GMC</option>
+				<option value="Honda">Honda</option>
+				<option value="Hummer">Hummer</option>
+				<option value="Hyundai">Hyundai</option>
+				<option value="Infiniti">Infiniti</option>
+				<option value="Isuzu">Isuzu</option>
+				<option value="Iveco">Iveco</option>
+				<option value="Jaguar">Jaguar</option>
+				<option value="Jeep">Jeep</option>
+				<option value="Kia">Kia</option>
+				<option value="Koenigsegg">Koenigsegg</option>
+				<option value="Lamborghini">Lamborghini</option>
+				<option value="Lancia">Lancia</option>
+				<option value="Land Rover">Land Rover</option>
+				<option value="Lexus">Lexus</option>
+				<option value="Lotus">Lotus</option>
+				<option value="Maserati">Maserati</option>
+				<option value="Mazda">Mazda</option>
+				<option value="McLaren">McLaren</option>
+				<option value="Mercedes-Benz">Mercedes-Benz</option>
+				<option value="MG">MG</option>
+				<option value="Mini">Mini</option>
+				<option value="Mitsubishi">Mitsubishi</option>
+				<option value="Nissan">Nissan</option>
+				<option value="Opel">Opel</option>
+				<option value="Pagani">Pagani</option>
+				<option value="Peugeot">Peugeot</option>
+				<option value="Polestar">Polestar</option>
+				<option value="Pontiac">Pontiac</option>
+				<option value="Porsche">Porsche</option>
+				<option value="RAM">RAM</option>
+				<option value="Renault">Renault</option>
+				<option value="Rolls-Royce">Rolls-Royce</option>
+				<option value="Rover">Rover</option>
+				<option value="Saab">Saab</option>
+				<option value="Seat">Seat</option>
+				<option value="Škoda">Škoda</option>
+				<option value="Smart">Smart</option>
+				<option value="SsangYong">SsangYong</option>
+				<option value="Subaru">Subaru</option>
+				<option value="Suzuki">Suzuki</option>
+				<option value="Tata">Tata</option>
+				<option value="Tesla">Tesla</option>
+				<option value="Toyota">Toyota</option>
+				<option value="Volkswagen">Volkswagen</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Wiesmann">Wiesmann</option>
+			</select>
+			<select name="type" required>
+				<option value="">-- Sélectionner le type --</option>
+				<option value="Berline">Berline</option>
+				<option value="SUV">SUV</option>
+				<option value="Citadine">Citadine</option>
+				<option value="Break">Break</option>
+				<option value="Coupé">Coupé</option>
+				<option value="Cabriolet">Cabriolet</option>
+				<option value="Monospace">Monospace</option>
+				<option value="Utilitaire">Utilitaire</option>
+				<option value="Pick-up">Pick-up</option>
+                <option value="4x4">4x4</option>
+				<option value="Autre">Autre</option>
+			</select>
+			<input type="text" name="model" placeholder="modèle du véhicule" required>
+
+			<input type="text" name="année" placeholder="Année" required>
+			<select name="carburant" required>
+				<option value="">-- Sélectionner le carburant --</option>
+				<option value="Essence">Essence</option>
+				<option value="Diesel">Diesel</option>
+				<option value="Hybride">Hybride</option>
+				<option value="Electrique">Electrique</option>
+				<option value="GPL">GPL</option>
+				<option value="Bioéthanol">Bioéthanol</option>
+				<option value="Autre">Autre</option>
+			</select>
+			<input type="number" name="km" placeholder="Kilométrage" required>
+			<select name="boite_de_vitesse" required>
+				<option value="">-- Sélectionner la boîte de vitesse --</option>
+				<option value="Manuelle">Manuelle</option>
+				<option value="Automatique">Automatique</option>
+				<option value="Séquentielle">Séquentielle</option>
+				<option value="Robotisée">Robotisée</option>
+				<option value="CVT">CVT</option>
+				<option value="Autre">Autre</option>
+			</select>
+			<input type="text" name="couleur" placeholder="Couleur" required>
+			<input type="number" name="portes" placeholder="Nombre de portes" required>
+			<input type="file" name="photo" accept="image/*">
+			<input type="date" name="date_dernier_CT" placeholder="Date du dernier contrôle technique" required>
+			<input type="text" name="imatriculation" placeholder="Immatriculation" required>
+			<button type="submit">Ajouter</button>
+		</form>
+	</div>
+{% endblock %}

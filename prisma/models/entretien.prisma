@@ -1,0 +1,10 @@
+model Entretien {
+  id         Int      @id @default(autoincrement())
+  date       DateTime
+  type       String 
+  note       String?
+  km         Int
+  facture    String?
+  vehicleId  Int
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id])
+}

@@ -1,0 +1,25 @@
+{% extends '../layouts/base.twig' %}
+
+
+{% block content %}
+	<h2>Documents liés au véhicule</h2>
+	<form action="/documents/upload" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="vehicleId" value="{{ vehicleId }}">
+		<label>Type :</label>
+		<select name="type">
+			<option value="facture">Facture</option>
+			<option value="devis">Devis</option>
+		</select>
+		<input type="file" name="document" required>
+		<button type="submit">Envoyer</button>
+	</form>
+
+	<ul class="documents-list">
+		{% for doc in documents %}
+			<li>
+				<a href="/uploads/documents/{{ doc.path }}" target="_blank">{{ doc.name }}</a>
+				<span class="doc-type">{{ doc.type }}</span>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock %}
