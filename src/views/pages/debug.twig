@@ -1,0 +1,28 @@
+{% extends '../layouts/base.twig' %}
+
+{% block title %}Debug{% endblock %}
+
+{% block content %}
+    <h1>Structure HTML Debug</h1>
+    <div id="debug">
+        <pre id="html-output"></pre>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const output = document.getElementById('html-output');
+            output.textContent = document.documentElement.outerHTML;
+        });
+    </script>
+    <style>
+        #debug {
+            background: #fff;
+            color: #000;
+            padding: 20px;
+            overflow: auto;
+            max-height: 80vh;
+        }
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+{% endblock %}

@@ -1,4 +1,4 @@
-const { Prisma } = require("../../generated/prisma");
+const { Prisma } = require("../../../generated/prisma");
 const bcrypt = require("bcrypt");
 
 module.exports = Prisma.defineExtension({

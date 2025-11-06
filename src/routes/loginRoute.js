@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const loginController = require('../controllers/loginController');
-const authguardUser = require('../../services/authguardUser');
-const authguardMecano = require('../../services/authguardMecano');
+const authguardUser = require('../services/authguardUser');
+const authguardMecano = require('../services/authguardMecano');
 
 router.get('/login', loginController.getLogin);
 router.post('/login', loginController.postLogin);

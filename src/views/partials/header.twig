@@ -9,14 +9,7 @@
     </div>
 
     <nav>
-      {% if session.userId %}
-        <a href="/dashboardUser" class="{% if active == 'dashboardUser' %}active{% endif %}">Tableau de bord</a>
-      {% elseif session.mecanoId %}
-        <a href="/dashboardMecano" class="{% if active == 'dashboardMecano' %}active{% endif %}">Tableau de bord</a>
-      {% endif %}
-      
-      <a href="/calendar" class="{% if active == 'calendar' %}active{% endif %}">Calendrier</a>
-      <a href="/logout">Déconnexion</a>
+      <a href="/logout" class="btn btn-red">Déconnexion</a>
     </nav>
   </div>
 </header>

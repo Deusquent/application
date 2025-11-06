@@ -1,16 +1,8 @@
 const { PrismaClient } = require('../../generated/prisma');
 const bcrypt = require('bcrypt');
-const hashPasswordExtension = require('../../services/extension/hashPasswordExtension');
+const hashPasswordExtension = require('../services/extension/hashPasswordExtension');
+/** @type {PrismaClient} */
 const prisma = new PrismaClient({}).$extends(hashPasswordExtension);
-
-// exports.getRegisterVehicle = (req, res) => {
-//     res.render('pages/registerVehicle.twig');
-// };
-
-// exports.postRegisterVehicle = async (req, res) => {
- 
-//     res.redirect('/dashboard');
-// };
 
 exports.getAddVehicle = (req, res) => {
     res.render('pages/addVoiture.twig');
@@ -19,10 +11,10 @@ exports.getAddVehicle = (req, res) => {
 exports.postAddVehicle = async (req, res) => {
     try {
         const {
-            type,
             marque,
             model,
-            année,
+            type,
+            annee,
             carburant,
             km,
             boite_de_vitesse,
@@ -32,33 +24,110 @@ exports.postAddVehicle = async (req, res) => {
             imatriculation
         } = req.body;
 
-        let photoPath = null;
-        if (req.file) {
-            photoPath = req.file.filename;
-        }
-
+        const photoPath = req.file ? `/uploads/vehicles/${req.file.filename}` : null;
         await prisma.vehicle.create({
             data: {
-                type,
                 marque,
                 model,
-                année,
+                type,
+                annee, 
                 carburant,
                 km: parseInt(km),
                 boite_de_vitesse,
                 couleur,
                 portes: parseInt(portes),
-                photo: photoPath,
-                userId: req.session.userId,
-                createdAt: new Date(),
                 date_dernier_CT: new Date(date_dernier_CT),
-                imatriculation
+                imatriculation,
+                photo: photoPath, 
+                createdAt: new Date(),
+
+                user: {
+                    connect: { id: req.session.userId }
+                }
             }
         });
 
-        res.redirect('/dashboardUser');
+        res.render('pages/dashboardUser.twig');
     } catch (error) {
-        console.error('Erreur lors de l\'ajout du véhicule :', error);
-        res.status(500).send('Erreur lors de l\'ajout du véhicule');
+        console.error("Erreur lors de l'ajout du véhicule :", error);
+        res.status(500).send("Erreur lors de l'ajout du véhicule");
+    }
+};
+
+exports.getVehicles = async (req, res) => {
+    try {
+        const vehicles = await prisma.vehicle.findMany({
+            where: { userId: req.session.userId }, 
+        });
+
+        res.render('pages/dashboardUser.twig', { vehicles }); 
+    } catch (error) {
+        console.error('Erreur lors de la récupération des véhicules :', error);
+        res.status(500).send('Erreur serveur');
+    }
+};
+
+
+exports.getVehicleDetail = async (req, res) => {
+    try {
+        const vehicleId = parseInt(req.params.id);
+        const vehicle = await prisma.vehicle.findUnique({
+            where: {
+                id: vehicleId
+            }
+        });
+
+        if (!vehicle || vehicle.userId !== req.session.userId) {
+            return res.status(404).send('Véhicule introuvable ou non autorisé');
+        }
+
+        res.render('pages/vehicule-detail.twig', { vehicle });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erreur serveur');
+    }
+};
+
+exports.deleteVehicle = async (req, res) => {
+    try {
+        const vehicleId = parseInt(req.params.id);
+
+        const vehicle = await prisma.vehicle.findUnique({
+            where: { id: vehicleId },
+        });
+
+        if (!vehicle) {
+            return res.status(404).send('Véhicule introuvable.');
+        }
+
+        await prisma.vehicle.delete({
+            where: { id: vehicleId },
+        });
+
+        res.redirect('/mes-vehicules');
+    } catch (error) {
+        console.error('Erreur lors de la suppression du véhicule :', error);
+        res.status(500).send('Erreur serveur');
+    }
+};
+exports.getAllUserVehicles = async (req, res) => {
+    try {
+        const vehicles = await prisma.vehicle.findMany({
+            where: { userId: req.session.userId },
+        });
+
+
+        const totalKm = vehicles.reduce((sum, vehicle) => sum + (vehicle.km || 0), 0);
+
+        const alertCount = vehicles.filter(vehicle => vehicle.alerts && vehicle.alerts.length > 0).length;
+
+        res.render('pages/Vehicle.twig', {
+            vehicles,
+            totalKm,
+            alertCount,
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des véhicules :', error);
+        res.status(500).send('Erreur serveur');
     }
 };

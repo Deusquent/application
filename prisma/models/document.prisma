@@ -1,9 +1,13 @@
 model Document {
   id          Int       @id @default(autoincrement())
   name        String
-  type        String     
-  path        String     
-  createdAt   DateTime   @default(now())
-  vehicleId   Int
-  vehicle     Vehicle    @relation(fields: [vehicleId], references: [id])
+  type        String
+  description String?
+  path        String
+  expiryDate  DateTime?
+  createdAt   DateTime  @default(now())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  vehicleId   Int?
+  vehicle     Vehicle?  @relation(fields: [vehicleId], references: [id])
 }

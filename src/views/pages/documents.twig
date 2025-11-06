@@ -1,25 +1,138 @@
 {% extends '../layouts/base.twig' %}
 
+{% block styles %}
+	<link rel="stylesheet" href="/asset/css/calendar.css">
+	<link rel="stylesheet" href="/asset/css/documents.css">
+{% endblock %}
+
+{% block scripts %}
+	<script src="/asset/js/document.js"></script>
+{% endblock %}
 
 {% block content %}
-	<h2>Documents liés au véhicule</h2>
-	<form action="/documents/upload" method="POST" enctype="multipart/form-data">
-		<input type="hidden" name="vehicleId" value="{{ vehicleId }}">
-		<label>Type :</label>
-		<select name="type">
-			<option value="facture">Facture</option>
-			<option value="devis">Devis</option>
-		</select>
-		<input type="file" name="document" required>
-		<button type="submit">Envoyer</button>
-	</form>
+	<div class="dashboard-layout">
+		<aside class="sidebar">
+			<nav class="sidebar-nav">
+				<a href="/dashboardUser">Tableau de bord</a>
+				<a href="/mes-vehicules">Mes véhicules</a>
+				<a href="/calendar">Rendez-vous</a>
+				<a href="/documents" class="active">Documents</a>
+				<a href="/parametres">Paramètres</a>
+			</nav>
+			<div class="sidebar-stats">
+				<div>Documents
+					<span class="stat-red">{{ documents|length }}</span>
+				</div>
+				<div>Expirés
+					<span class="stat-yellow">{{ expiredCount|default(0) }}</span>
+				</div>
+				<div>À renouveler
+					<span class="stat-green">{{ toRenewCount|default(0) }}</span>
+				</div>
+			</div>
+		</aside>
 
-	<ul class="documents-list">
-		{% for doc in documents %}
-			<li>
-				<a href="/uploads/documents/{{ doc.path }}" target="_blank">{{ doc.name }}</a>
-				<span class="doc-type">{{ doc.type }}</span>
-			</li>
-		{% endfor %}
-	</ul>
+		<div class="dashboard-main">
+			<section class="dashboard-header">
+				<h1>Documents</h1>
+				<p>Gérez vos documents et suivez leurs dates d'expiration</p>
+				<div class="dashboard-actions">
+					<a href="#upload-form" class="btn btn-green" id="show-upload-form">+ Ajouter document</a>
+				</div>
+			</section>
+
+			<div
+				class="dashboard-content-grid">
+
+				<!-- Formulaire d'upload (initialement caché) -->
+				<section class="dashboard-block upload-block" id="upload-form" style="display: none;">
+					<h2>Ajouter un nouveau document</h2>
+					npx prisma generate
+				</section>
+
+				<!-- Liste des documents -->
+				<!-- Remplacer la section du formulaire d'upload -->
+				<section class="dashboard-block upload-block" id="upload-form" style="display: none;">
+					<h2>Ajouter un nouveau document</h2>
+					<form action="/documents/upload" method="POST" enctype="multipart/form-data" class="form-standard">
+						<div class="form-group">
+							<label for="name">Nom du document</label>
+							<input type="text" id="name" name="name" placeholder="Nom du document" required>
+						</div>
+
+						<div class="form-group">
+							<label for="type">Type de document</label>
+							<select id="type" name="type" required>
+								<option value="">Sélectionner un type</option>
+								<option value="carte_grise">Carte grise</option>
+								<option value="assurance">Assurance</option>
+								<option value="controle_technique">Contrôle technique</option>
+								<option value="facture">Facture</option>
+								<option value="devis">Devis</option>
+								<option value="permis">Permis de conduire</option>
+								<option value="autre">Autre</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="description">Description (optionnel)</label>
+							<textarea id="description" name="description" rows="3"></textarea>
+						</div>
+
+						<div class="form-group">
+							<label for="vehicleId">Véhicule associé (optionnel)</label>
+							<select id="vehicleId" name="vehicleId">
+								<option value="">Aucun véhicule</option>
+								{% for vehicle in vehicles %}
+									<option value="{{ vehicle.id }}">{{ vehicle.marque }}
+										{{ vehicle.model }}
+										({{ vehicle.immatriculation }})</option>
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="expiryDate">Date d'expiration (optionnel)</label>
+							<input type="date" id="expiryDate" name="expiryDate">
+						</div>
+
+						<div class="form-group">
+							<label for="document">Fichier</label>
+							<input type="file" id="document" name="document" required>
+							<small>Formats acceptés: JPG, PNG, PDF, DOC, DOCX (max 10MB)</small>
+						</div>
+
+						<div class="form-actions">
+							<button type="button" id="cancel-upload" class="btn btn-secondary">Annuler</button>
+							<button type="submit" class="btn btn-green">Enregistrer</button>
+						</div>
+					</form>
+				</section>
+
+				<!-- Documents à renouveler prochainement -->
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () { // Gestion de l'affichage du formulaire d'upload
+const showUploadButton = document.getElementById('show-upload-form');
+const uploadForm = document.getElementById('upload-form');
+const cancelButton = document.getElementById('cancel-upload');
+
+showUploadButton.addEventListener('click', function (e) {
+e.preventDefault();
+uploadForm.style.display = 'block';
+window.scrollTo({
+top: uploadForm.offsetTop - 20,
+behavior: 'smooth'
+});
+});
+
+cancelButton.addEventListener('click', function () {
+uploadForm.style.display = 'none';
+});
+});
+	</script>
 {% endblock %}

@@ -1,0 +1,12 @@
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?      // Description optionnelle
+  date        DateTime
+  heure      String?      // Heure optionnelle
+  location    String?      // Lieu optionnel
+  userId      Int
+  vehicleId   Int?         // Lien avec un véhicule (optionnel)
+  user        User     @relation(fields: [userId], references: [id])
+  vehicle     Vehicle? @relation(fields: [vehicleId], references: [id])
+}

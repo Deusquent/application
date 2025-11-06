@@ -9,6 +9,7 @@ const registerRoute = require("./src/routes/registerRoute")
 const dashboardMecanoRoute = require("./src/routes/dashboardMecanoRoute")
 const dashboardUserRoute = require("./src/routes/dashboardUserRoute");
 const documentRoute = require("./src/routes/documentsRoute");
+const calendarRoute = require("./src/routes/calendarRoute");
 // const apiRoute = require('./routes/vehicleRoute');
 
 
@@ -16,6 +17,7 @@ const app = express();
 
 app.set('views', './src/views')
 app.set('view engine', 'twig')
+app.use(express.json())
 app.use(express.static("./public"))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
@@ -37,9 +39,7 @@ app.use(registerRoute);
 app.use(dashboardMecanoRoute);
 app.use(dashboardUserRoute);
 app.use(documentRoute);
-
-
-// app.use(apiRoute);
+app.use(calendarRoute);
 
 
 app.listen(3000, ()=>{

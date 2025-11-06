@@ -3,7 +3,7 @@ model Vehicle {
   type             String      
   marque           String      
   model            String      
-  année            String      
+  annee            String      
   carburant        String      
   km               Int        
   boite_de_vitesse String      
@@ -17,4 +17,5 @@ model Vehicle {
   imatriculation   String      
   entretiens       Entretien[]
   documents        Document[]
+  events           Event[]
 }

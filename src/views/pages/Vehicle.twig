@@ -1,0 +1,86 @@
+{% extends '../layouts/base.twig' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/asset/css/commun.css">
+    <link rel="stylesheet" href="/asset/css/dashboard.css">
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="/dashboardUser">Tableau de bord</a>
+                <a href="/mes-vehicules" class="active">Mes véhicules</a>
+                <a href="/calendar">Rendez-vous</a>
+                <a href="/documents">Documents</a>
+                <a href="/parametres">Paramètres</a>
+            </nav>
+            <div class="sidebar-stats">
+                <div>Véhicules
+                    <span class="stat-red">{{ vehicles.length }}</span>
+                </div>
+                <div>KM totaux
+                    <span class="stat-blue">{{ totalKm }}</span>
+                </div>
+                <div>Alertes
+                    <span class="stat-yellow">{{ alertCount }}</span>
+                </div>
+            </div>
+        </aside>
+
+        <div class="dashboard-main">
+            <section class="dashboard-header">
+                <h1>Mes véhicules</h1>
+                <p>Gérez et suivez l'entretien de vos véhicules</p>
+            </section>
+            
+            <div class="dashboard-actions">
+                <div class="search-block">
+                    <input type="text" placeholder="Rechercher un véhicule..." class="search-input"/>
+                    <button class="btn btn-small">🗂</button>
+                    <button class="btn btn-small">🔽</button>
+                </div>
+                <a href="/addVoiture" class="btn btn-red">+ Ajouter véhicule</a>
+            </div>
+
+            <div class="dashboard-content-grid">
+                <section class="dashboard-block vehicles-block">
+                    <div class="vehicles-list">
+                        {% if vehicles and vehicles|length > 0 %}
+                            <div class="vehicle-grid">
+                                {% for vehicle in vehicles %}
+                                    <div class="vehicle-card">
+                                        <div class="vehicle-icon">
+                                            {% if vehicle.photo %}
+                                                <img src="{{ vehicle.photo }}" alt="{{ vehicle.marque }} {{ vehicle.model }}">
+                                            {% else %}
+                                                <div class="vehicle-no-img">Pas de photo</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="vehicle-info">
+                                            <h3>{{ vehicle.marque }} {{ vehicle.model }}</h3>
+                                            <p><strong>Type :</strong> {{ vehicle.type }}</p>
+                                            <p><strong>Année :</strong> {{ vehicle.annee }}</p>
+                                            <p><strong>Carburant :</strong> {{ vehicle.carburant }}</p>
+                                            <p><strong>Kilométrage :</strong> {{ vehicle.km }} km</p>
+                                            <p><strong>Boîte :</strong> {{ vehicle.boite_de_vitesse }}</p>
+                                            <p><strong>Immatriculation :</strong> {{ vehicle.imatriculation }}</p>
+                                            
+                                            <div class="vehicle-actions">
+                                                <form action="/delete-vehicule/{{ vehicle.id }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?');">
+                                                    <button type="submit" class="btn-small danger">🗑 Supprimer</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>Aucun véhicule enregistré pour l'instant.</p>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

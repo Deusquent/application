@@ -1,6 +1,6 @@
 const { PrismaClient } = require('../../generated/prisma');
 const bcrypt = require('bcrypt');
-const hashPasswordExtension = require('../../services/extension/hashPasswordExtension');
+const hashPasswordExtension = require('../services/extension/hashPasswordExtension');
 const prisma = new PrismaClient({}).$extends(hashPasswordExtension);
 
 exports.getInscription = async (req, res) => {

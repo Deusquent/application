@@ -1,59 +1,115 @@
 {% extends '../layouts/base.twig' %}
 
 {% block content %}
-	<div class="dashboard-layout">
-		<aside class="sidebar">
-			<div class="sidebar-logo-block">
-				<div class="sidebar-logo">
-					<img src="/assets/img/logo.svg" alt="Logo" style="width:24px;height:24px;">
-				</div>
-				<span class="sidebar-title">CarMaintenance Pro</span>
-			</div>
-			<nav class="sidebar-nav">
-				<a href="/dashboard" class="active">Tableau de bord</a>
-				<a href="/mes-vehicules">Mes véhicules</a>
-				<a href="/rdv">Rendez-vous</a>
-				<a href="/documents">Documents</a>
-				<a href="/parametres">Paramètres</a>
-			</nav>
-			<div class="sidebar-stats">
-				<div>Véhicules
-					<span class="stat-red"></span>
-				</div>
-				<div>RDV ce mois
-					<span class="stat-yellow"></span>
-				</div>
-				<div>Alertes
-					<span class="stat-red"></span>
-				</div>
-			</div>
-		</aside>
-		<div class="dashboard-main">
-			<header class="dashboard-header">
-				<h1>Tableau de bord</h1>
-				<p>Vue d'ensemble de vos véhicules et entretiens</p>
-				<div class="dashboard-actions">
-					<a href="/addVoiture" class="btn btn-green">+ Ajouter véhicule</a>
-					<a href="/nouveau-rdv" class="btn btn-red">Nouveau RDV</a>
-				</div>
-			</header>
-			<div class="dashboard-content-grid">
-				<section class="dashboard-block vehicles-block">
-					<h2>Mes véhicules</h2>
-					<div class="vehicles-list"></div>
-				</section>
-				<section class="dashboard-block rdv-block">
-					<h2>Rendez-vous à venir</h2>
-					<div class="rdv-list"></div>
-				</section>
-				<section class="dashboard-block reco-block">
-					<h2>Recommandations d'entretien</h2>
-					<div class="reco-list">
-						<div class="reco-card"></div>
-						<div class="reco-card empty"></div>
-					</div>
-				</section>
-			</div>
-		</div>
-	</div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="/dashboardUser" class="active">Tableau de bord</a>
+                <a href="/mes-vehicules">Mes véhicules</a>
+                <a href="/calendar">Rendez-vous</a>
+                <a href="/documents">Documents</a>
+                <a href="/parametres">Paramètres</a>
+            </nav>
+            
+            <div class="sidebar-stats">
+                <div>Véhicules
+                    <span class="stat-red">{{ vehicles|length }}</span>
+                </div>
+                <div>Rendez-vous
+                    <span class="stat-yellow">{{ rdvs|length }}</span>
+                </div>
+                <div>Alertes
+                    <span class="stat-green">{{ alerts|default(0) }}</span>
+                </div>
+            </div>
+            
+            <!-- Déplacer les recommandations dans la sidebar -->
+            <div class="sidebar-recommendations">
+                <h3>Recommandations</h3>
+                {% if recommendations and recommendations|length > 0 %}
+                    {% for reco in recommendations %}
+                        <div class="sidebar-reco-item">
+                            <span class="sidebar-reco-icon">🔧</span>
+                            <div class="sidebar-reco-content">
+                                <p class="sidebar-reco-title">{{ reco.title }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="sidebar-no-reco">Pas de recommandations</p>
+                {% endif %}
+            </div>
+        </aside>
+
+        <div class="dashboard-main">
+            <section class="dashboard-header">
+                <h1>Tableau de bord</h1>
+                <p>Bienvenue sur votre espace personnel</p>
+            </section>
+            
+            <div class="dashboard-content-grid">
+                <!-- Section Véhicules -->
+                <section class="dashboard-block vehicles-block">
+                    <h2>Mes véhicules</h2>
+                    <div class="vehicles-list">
+                        {% if vehicles and vehicles|length > 0 %}
+                            <div class="vehicle-grid">
+                                {% for vehicle in vehicles %}
+                                    <div class="vehicle-card">
+                                        <div class="vehicle-icon">
+                                            {% if vehicle.photo %}
+                                                <img src="{{ vehicle.photo }}" alt="{{ vehicle.marque }} {{ vehicle.model }}">
+                                            {% else %}
+                                                <div class="vehicle-no-img">Pas de photo</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="vehicle-info">
+                                            <h3>{{ vehicle.marque }} {{ vehicle.model }}</h3>
+                                            <p><strong>Type :</strong> {{ vehicle.type }}</p>
+                                            <p><strong>Année :</strong> {{ vehicle.annee }}</p>
+                                            <p><strong>Kilométrage :</strong> {{ vehicle.km }} km</p>
+                                            <p><strong>Carburant :</strong> {{ vehicle.carburant }}</p>
+                                            <p><strong>Boîte :</strong> {{ vehicle.boite_de_vitesse }}</p>
+                                            <p><strong>Immatriculation :</strong> {{ vehicle.imatriculation }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>Aucun véhicule enregistré pour l'instant.</p>
+                        {% endif %}
+                    </div>
+                </section>
+
+                <!-- Section Rendez-vous -->
+                <section class="dashboard-block rdv-block">
+                    <h2>Rendez-vous à venir</h2>
+                    <div class="events-list">
+                        {% if rdvs|length > 0 %}
+                            {% for rdv in rdvs %}
+                                <div class="event-card">
+                                    <div class="event-date">
+                                        <span>{{ rdv.formattedDate|split(' ')[0] }}</span>
+                                        <span>{{ rdv.formattedDate|split(' ')[1] }}</span>
+                                    </div>
+                                    <div class="event-info">
+                                        <h4>{{ rdv.title }}</h4>
+                                        {% if rdv.location %}
+                                            <p><i class="fas fa-map-marker-alt"></i> {{ rdv.location }}</p>
+                                        {% endif %}
+                                        <p><i class="far fa-clock"></i> {{ rdv.formattedTime }}</p>
+                                        {% if rdv.vehicle %}
+                                            <p><i class="fas fa-car"></i> {{ rdv.vehicle.marque }} {{ rdv.vehicle.model }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="no-events">Aucun rendez-vous prévu ce mois-ci.</p>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
 {% endblock %}

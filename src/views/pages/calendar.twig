@@ -1,23 +1,129 @@
-{% extends 'base.twig' %}
-{% block title %}Calendrier des rendez-vous{% endblock %}
+{% extends '../layouts/base.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block styles %}
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <link href="/asset/css/calendar.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<link rel="stylesheet" href="/calendar/core/main.css">
-<link rel="stylesheet" href="/calendar/daygrid/main.css">
-<link rel="stylesheet" href="/calendar/timegrid/main.css">
-<link rel="stylesheet" href="/calendar/main.css">
-<link rel="stylesheet" href="/public/assets/css/calendar.css">
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="/dashboardUser">Tableau de bord</a>
+                <a href="/mes-vehicules">Mes véhicules</a>
+                <a href="/calendar" class="active">Rendez-vous</a>
+                <a href="/documents">Documents</a>
+                <a href="/parametres">Paramètres</a>
+            </nav>
+            <div class="sidebar-stats">
+                <div>Véhicules
+                    <span class="stat-red">{{ vehicles|length }}</span>
+                </div>
+                <div>RDV ce mois
+                    <span class="stat-yellow">{{ rdvs|length }}</span>
+                </div>
+                <div>Alertes
+                    <span class="stat-red">{{ alerts|length }}</span>
+                </div>
+            </div>
+        </aside>
 
-<div class="calendar-container">
-    <h2>Calendrier des rendez-vous</h2>
-    <div id ="calendrier">
-        <!-- Implémentation calendrier ou JS ici -->
-        <p>Ici le calendrier interactif</p>
+        <!-- Partie principale avec le calendrier -->
+        <div class="calendar-container">
+            <h2>Calendrier</h2>
+            <div id="calendar"></div>
+        </div>
+
+        <!-- Liste des prochains rendez-vous à droite -->
+        <div class="upcoming-events">
+            <h3>Prochains rendez-vous</h3>
+            <div class="events-list">
+                {% if rdvs and rdvs|length > 0 %}
+                    {% for rdv in rdvs %}
+                        <div class="event-card">
+                            <div class="event-date">
+                                <span>{{ rdv.date|date('d') }}</span>
+                                <span>{{ rdv.date|date('M') }}</span>
+                            </div>
+                            <div class="event-info">
+                                <h4>{{ rdv.title }}</h4>
+                                <p>{{ rdv.description }}</p>
+                                {% if rdv.location %}
+                                    <p>Lieu: {{ rdv.location }}</p>
+                                {% endif %}
+                                {% if rdv.vehicle %}
+                                    <p>Véhicule: {{ rdv.vehicle.marque }} {{ rdv.vehicle.model }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucun rendez-vous à venir.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
-</div>
-<script src="/calendar/core/main.js"></script>
-<script src="/calendar/daygrid/main.js"></script>
-<script src="/calendar/timegrid/main.js"></script>
-<script src="/calendar/list/main.js"></script>
-<script src="/FullCalendar/script.js"></script>
+    
+    <!-- Modal pour ajouter/modifier un événement -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Ajouter un événement</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="eventForm">
+                <input type="hidden" id="eventId" name="id">
+                <input type="hidden" id="eventDate" name="date">
+                
+                <div class="form-group">
+                    <label for="title">Titre:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Heure:</label>
+                    <select id="time" name="time" required>
+                        <option value="">Sélectionner une heure</option>
+                        {% for hour in 8..18 %}
+                            <option value="{{ hour }}:00">{{ hour }}:00</option>
+                            <option value="{{ hour }}:30">{{ hour }}:30</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vehicle">Véhicule:</label>
+                    <select id="vehicle" name="vehicleId">
+                        <option value="">Sélectionner un véhicule</option>
+                        {% for vehicle in vehicles %}
+                            <option value="{{ vehicle.id }}">{{ vehicle.marque }} {{ vehicle.model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Lieu:</label>
+                    <input type="text" id="location" name="location">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Annuler</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">Enregistrer</button>
+                    <button type="button" class="btn btn-danger" id="deleteBtn" style="display:none;">Supprimer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
 
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="/asset/js/calendar.js"></script>
 {% endblock %}
